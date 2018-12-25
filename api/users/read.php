@@ -1,4 +1,6 @@
 <?php
+    if ($_SERVER['REQUEST_METHOD'] !== 'GET') die ('Wrong method');
+
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
 
@@ -12,12 +14,6 @@
     $stmt = $user->get();
     $num = $stmt->rowCount();
     $users_arr=array();
-
-    # Get JSON as a string
-    $json_str = file_get_contents('php://input');
-
-    # Get as an object
-    $json_obj = json_decode($json_str); //working
 
     if ($num > 0){
         
