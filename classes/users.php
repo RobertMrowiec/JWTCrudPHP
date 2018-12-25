@@ -2,7 +2,6 @@
 
     class User {
         private $connection;
-        private $table_name = "users";
 
         public function __construct($db){
             $this->connection = $db;
@@ -17,8 +16,6 @@
 
         public function post($body) {
             if (
-                !$body['name'] || 
-                !$body['surname'] || 
                 !$body['email'] || 
                 !$body['password']
             ) die('Wrong data');
@@ -26,7 +23,7 @@
             $checkQuery = 'select * from users where email = "'.$body['email'].'"';
             $this->checkRecordExists($checkQuery, 'User with specific email already exists');
 
-            $query = 'insert into users (name, surname, email, password) values ("'.$body['name'].'", "'.$body['surname'].'", "'.$body['email'].'", "'.$body['password'].'");';
+            $query = 'insert into users (email, password) values ("'.$body['email'].'", "'.$body['password'].'");';
             $stmt = $this->connection->prepare($query);
             $stmt->execute(); 
             return $stmt;

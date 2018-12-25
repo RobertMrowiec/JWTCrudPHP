@@ -6,7 +6,7 @@
     header("Access-Control-Allow-Origin: *");
 
     include_once '../../config/database.php';
-    include_once '../../models/users.php';
+    include_once '../../classes/users.php';
 
     $database = new Database();
     $db = $database->getConnection(); 
