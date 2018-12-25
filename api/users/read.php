@@ -5,7 +5,7 @@
     header("Content-Type: application/json; charset=UTF-8");
 
     include_once '../../config/database.php';
-    include_once '../../models/users.php';
+    include_once '../../classes/users.php';
 
     $database = new Database();
     $db = $database->getConnection();
@@ -16,13 +16,13 @@
     $users_arr=array();
 
     if ($num > 0){
-        
         while ($row = $stmt->fetch()){
             extract($row);
 
             $user_item=array(
                 "id" => $id,
-                "name" => $name,
+                "email" => $email,
+                "password" => $password,
             );
 
             array_push($users_arr, $user_item);
