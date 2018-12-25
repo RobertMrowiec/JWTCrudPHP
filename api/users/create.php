@@ -1,4 +1,5 @@
 <?php
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') die ('Wrong method');
 
     header("Content-Type: application/json; charset=UTF-8");
     header("Access-Control-Allow-Methods: POST");
@@ -8,14 +9,12 @@
     include_once '../../models/users.php';
 
     $database = new Database();
-    $db = $database->getConnection(); 
+    $db = $database->getConnection();
 
     $user = new User($db);
 
-    # Get JSON as a string
     $input = file_get_contents('php://input');
     $data = json_decode($input, true);
-    // $user->post($data);
     if ($user->post($data)) {
         echo '{';
             echo '"message": "User was created."';
