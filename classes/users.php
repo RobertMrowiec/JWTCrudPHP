@@ -21,14 +21,6 @@
             return $stmt;
         }
 
-        public function put($id, $password) {
-            if (!$password || !$id) die (json_encode(['message' => 'Wrong data']));
-            $query = ' update users SET password = "'.$password.'" WHERE id = '.$id;
-            $stmt = $this->connection->prepare($query);
-            $stmt->execute();
-            return $stmt;
-        }
-
         public function post($body) {
             if (
                 !$body['email'] || 
@@ -41,6 +33,14 @@
             $query = 'insert into users (email, password) values ("'.$body['email'].'", "'.$body['password'].'");';
             $stmt = $this->connection->prepare($query);
             $stmt->execute(); 
+            return $stmt;
+        }
+
+        public function update($id, $password) {
+            if (!$password || !$id) die (json_encode(['message' => 'Wrong data']));
+            $query = ' update users SET password = "'.$password.'" WHERE id = '.$id;
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute();
             return $stmt;
         }
 
