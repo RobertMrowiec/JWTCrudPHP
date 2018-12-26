@@ -25,7 +25,7 @@
             if (
                 !$body['email'] || 
                 !$body['password']
-            ) die('Wrong data');
+            ) die(json_encode(['message' => 'Wrong data']));
             
             $checkQuery = 'select * from users where email = "'.$body['email'].'"';
             $this->checkRecordExists($checkQuery, 'User with specific email already exists');
@@ -33,6 +33,14 @@
             $query = 'insert into users (email, password) values ("'.$body['email'].'", "'.$body['password'].'");';
             $stmt = $this->connection->prepare($query);
             $stmt->execute(); 
+            return $stmt;
+        }
+
+        public function update($id, $password) {
+            if (!$password || !$id) die (json_encode(['message' => 'Wrong data']));
+            $query = ' update users SET password = "'.$password.'" WHERE id = '.$id;
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute();
             return $stmt;
         }
 
