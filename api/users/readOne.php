@@ -1,5 +1,5 @@
 <?php
-    if ($_SERVER['REQUEST_METHOD'] !== 'GET') die ('Wrong method');
+    if ($_SERVER['REQUEST_METHOD'] !== 'GET') die('Wrong method');
 
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
@@ -11,31 +11,26 @@
     if (verifyToken()) {
         $database = new Database();
         $db = $database->getConnection();
-        
-        $user = new User($db);
-        $stmt = $user->get();
-        $num = $stmt->rowCount();
-        $users_arr=array();
 
-        if ($num > 0){
+        $user = new User($db);
+        $stmt = $user->getById($_GET['id']);
+        $num = $stmt->rowCount();
+        $userItem;
+        if ($num) {
             while ($row = $stmt->fetch()){
                 extract($row);
 
-                $user_item=array(
-                    "id" => $id,
-                    "email" => $email,
-                    "password" => $password,
-                );
-
-                array_push($users_arr, $user_item);
+                $userItem = (object) [
+                    'id' => $id,
+                    'email' => $email,
+                    'password' => $password,
+                ];
             }
-
             http_response_code(200);
 
-            echo json_encode($users_arr);
-        } else echo json_encode(['message' => 'Users not found']);
+            echo json_encode($userItem);
+        } else echo json_encode(['message' => "User doesn't exists"]);
     } else {
         echo json_encode(['message' => 'Wrong token']);
     } 
-
 ?>

@@ -14,6 +14,13 @@
             return $stmt;
         }
 
+        public function getById($id) {
+            $query = 'select * from users where id = '.$id;
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute();
+            return $stmt;
+        }
+
         public function post($body) {
             if (
                 !$body['email'] || 
@@ -42,14 +49,14 @@
             $checkStmt = $this->connection->prepare($query);
             $checkStmt->execute(); 
             $num = $checkStmt->rowCount();
-            if ($num > 0) die($response);
+            if ($num > 0) echo json_encode($response);
         }
 
         function checkRecordNotExists($query, $response) {
             $checkStmt = $this->connection->prepare($query);
             $checkStmt->execute(); 
             $num = $checkStmt->rowCount();
-            if ($num == 0) die($response);
+            if ($num == 0) die (json_encode(['message' => $response]));
         }
     }
 

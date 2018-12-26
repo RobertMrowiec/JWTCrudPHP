@@ -35,15 +35,15 @@
                 $headers = ['alg'=>'HS256','typ'=>'JWT'];
                 $headers_encoded = base64url_encode(json_encode($headers));
 
-                // //build the payload
+                //build the payload
                 $payload_encoded = base64url_encode(json_encode($arr));
 
-                // //build the signature
+                //build the signature
                 $key = 'secret';
                 $signature = hash_hmac('SHA256',"$headers_encoded.$payload_encoded",$key,true);
                 $signature_encoded = base64url_encode($signature);
                 
-                // //build and return the token
+                //build and return the token
                 $token = "$headers_encoded.$payload_encoded.$signature_encoded";
                 return array(
                     'token' => $token,
