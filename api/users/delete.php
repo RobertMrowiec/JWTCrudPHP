@@ -7,20 +7,17 @@
 
     include_once '../../config/database.php';
     include_once '../../classes/users.php';
+    include '../login/verifyToken.php';
 
-    $database = new Database();
-    $db = $database->getConnection(); 
+    if (verifyToken()) {
+        $database = new Database();
+        $db = $database->getConnection(); 
 
-    $user = new User($db);
+        $user = new User($db);
 
-    if ($user->delete($_GET['id'])) {
-        echo '{';
-            echo '"message": "User deleted succesfully."';
-        echo '}';
+        if ($user->delete($_GET['id'])) echo json_encode(['message' => 'User deleted succesfully']);
+        else echo json_encode(['message' => 'Unable to delete user']);
     } else {
-        echo '{';
-            echo '"message": "Unable to delete user."';
-        echo '}';
+        echo json_encode(['message' => 'Wrong token']);
     }
-
 ?>
