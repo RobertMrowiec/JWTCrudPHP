@@ -15,9 +15,7 @@
 
         $offers = new Offer($db);
 
-        $input = file_get_contents('php://input');
-        $data = json_decode($input, true);
-        if ($offers->post($data)) echo json_encode(['message' => 'Offer was created']);
+        if ($offers->post($_POST, $_FILES)) echo json_encode(['message' => 'Offer was created']);
         else echo json_encode(['message' => 'Unable to create offers']);
     } else {
         echo json_encode(['message' => 'Wrong token']);
