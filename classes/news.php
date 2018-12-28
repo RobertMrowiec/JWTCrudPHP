@@ -21,11 +21,14 @@
             return $stmt;
         }
 
-        public function post($body) {
-            if (!count($body)) die(json_encode(['message' => 'Wrong data']));
+        public function post($body, $files) {
+            include '../uploadFunction.php';
+            $filename = json_decode(uploadFile($files, 'image'),true)['filename'];
+
+            if (!count($body) && !$filename) die(json_encode(['message' => 'Wrong data']));
             
-            $query = 'insert into news (';
-            $endQuery .= ' values (';
+            $query = 'insert into news (image,';
+            $endQuery .= ' values ("'.$filename.'", ';
             while ($value = current($body)) {
                 $query .= key($body).', ';
                 $endQuery.= '"'.$body[key($body)].'", ';
@@ -41,10 +44,15 @@
             return $stmt;
         }
 
-        public function update($id, $body) {
-            if (!count($body)) die(json_encode(['message' => 'Wrong data']));
+        public function update($id, $body, $files) {
+            include '../uploadFunction.php';
+
+            $filename = json_decode(uploadFile($files, 'image'),true)['filename'];
+
+            if (!count($body) && !$filename) die(json_encode(['message' => 'Wrong data']));
 
             $query = 'update news SET ';
+            if ($filename) $query .= 'image = "'.$filename.'", ';
             $endQuery .= ' WHERE id = '.$id;
             while ($value = current($body)) {
                 $query .= key($body).'='.'"'.$body[key($body)].'", ';

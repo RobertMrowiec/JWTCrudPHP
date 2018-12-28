@@ -15,9 +15,7 @@
 
         $news = new News($db);
 
-        $input = file_get_contents('php://input');
-        $data = json_decode($input, true);
-        if ($news->post($data)) echo json_encode(['message' => 'News was created']);
+        if ($news->post($_POST, $_FILES)) echo json_encode(['message' => 'News was created']);
         else echo json_encode(['message' => 'Unable to create news']);
     } else {
         echo json_encode(['message' => 'Wrong token']);
