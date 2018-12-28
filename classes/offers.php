@@ -48,13 +48,19 @@
             return $stmt;
         }
 
-        public function update($id, $body) {
-            // if (
-            //     !$body['category'] || 
-            //     !$body['title'] || 
-            // ) die(json_encode(['message' => 'Wrong data']));
+        public function update($id, $body, $files) {
+            include '../uploadFunction.php';
+
+            $filename = json_decode(uploadFile($files, 'photo'),true)['filename'];
+
+            if (
+                !$body['category'] || 
+                !$body['title'] ||
+                ($files['photo'] && !$filename)
+            ) die(json_encode(['message' => 'Wrong data']));
 
             $query = 'update offers SET ';
+            if ($filename) $query .= 'photo = "'.$filename.'", ';
             $endQuery .= ' WHERE Id_item = '.$id;
             while ($value = current($body)) {
                 $query .= key($body).'='.'"'.$body[key($body)].'", ';

@@ -11,7 +11,7 @@
     if (verifyToken()) {
         $database = new Database();
         $db = $database->getConnection();
-        
+
         $offers = new Offer($db);
         $stmt = $offers->get();
         $num = $stmt->rowCount();
