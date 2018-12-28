@@ -19,6 +19,7 @@
         $data = json_decode($input, true);
         $pass = $data['password'];
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+
         if ($user->post($data)) echo json_encode(['message' => 'User was created']);
         else echo json_encode(['message' => 'Unable to create user']);
     } else {
