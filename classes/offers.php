@@ -21,15 +21,18 @@
             return $stmt;
         }
 
-        public function post($body) {
+        public function post($body, $files) {
+            include '../uploadFunction.php';
+            $filename = json_decode(uploadFile($files, 'photo'),true)['filename'];
+
             if (
                 !$body['category'] || 
-                !$body['title'] || 
-                !$body['photo']
+                !$body['title'] && 
+                !$filename
             ) die(json_encode(['message' => 'Wrong data']));
-            
-            $query = 'insert into offers (';
-            $endQuery .= ' values (';
+
+            $query = 'insert into offers (photo,';
+            $endQuery .= ' values ("'.$filename.'", ';
             while ($value = current($body)) {
                 $query .= key($body).', ';
                 $endQuery.= '"'.$body[key($body)].'", ';
@@ -46,11 +49,10 @@
         }
 
         public function update($id, $body) {
-            if (
-                !$body['category'] || 
-                !$body['title'] || 
-                !$body['photo']
-            ) die(json_encode(['message' => 'Wrong data']));
+            // if (
+            //     !$body['category'] || 
+            //     !$body['title'] || 
+            // ) die(json_encode(['message' => 'Wrong data']));
 
             $query = 'update offers SET ';
             $endQuery .= ' WHERE Id_item = '.$id;
