@@ -1,9 +1,9 @@
 <?php
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') die ('Wrong method');
-
-    header("Content-Type: application/json; charset=UTF-8");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
     header("Access-Control-Allow-Methods: POST");
     header("Access-Control-Allow-Origin: *");
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') die ('Wrong method');
 
     include_once '../../config/database.php';
     include_once '../../classes/users.php';
@@ -19,6 +19,7 @@
         $data = json_decode($input, true);
         $pass = $data['password'];
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+
         if ($user->post($data)) echo json_encode(['message' => 'User was created']);
         else echo json_encode(['message' => 'Unable to create user']);
     } else {

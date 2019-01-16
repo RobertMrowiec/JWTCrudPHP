@@ -1,9 +1,9 @@
 <?php
-    if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') die ('Wrong method');
-
-    header("Content-Type: application/json; charset=UTF-8");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
     header("Access-Control-Allow-Methods: DELETE");
     header("Access-Control-Allow-Origin: *");
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') die ('Wrong method');
 
     include_once '../../config/database.php';
     include_once '../../classes/news.php';

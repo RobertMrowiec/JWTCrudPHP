@@ -57,7 +57,7 @@
             $checkStmt = $this->connection->prepare($query);
             $checkStmt->execute(); 
             $num = $checkStmt->rowCount();
-            if ($num > 0) echo json_encode($response);
+            if ($num > 0) die (json_encode(['message' => $response]));
         }
 
         function checkRecordNotExists($query, $response) {
