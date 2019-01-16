@@ -26,19 +26,26 @@
             $filename = json_decode(uploadFile($files, 'image'),true)['filename'];
 
             if (!count($body) && !$filename) die(json_encode(['message' => 'Wrong data']));
-            
-            $query = 'insert into news (image,';
-            $endQuery .= ' values ("'.$filename.'", ';
+            if ($filename){
+                $query = 'insert into news (image, link,';
+                $endQuery .= ' values ("'.$filename.'", "urlserwera/uploads/'.$filename.'", ';
+            } else {
+                $query = 'insert into news (';
+                $endQuery .= ' values (';
+            }
             while ($value = current($body)) {
                 $query .= key($body).', ';
                 $endQuery.= '"'.$body[key($body)].'", ';
                 next($body);
             };
+            $query .= 'dateTime';
+            $endQuery.= '"'.date("Y-m-d H:i:s").'", ';
             $query .= ')';
             $endQuery .= ')';
             $query = str_replace(", )", ")", $query);
             $endQuery = str_replace(", )", ")", $endQuery);
             $resultQuery = $query.$endQuery;
+            echo $resultQuery;
             $stmt = $this->connection->prepare($resultQuery);
             $stmt->execute();
             return $stmt;
@@ -52,7 +59,8 @@
             if (!count($body) && !$filename) die(json_encode(['message' => 'Wrong data']));
 
             $query = 'update news SET ';
-            if ($filename) $query .= 'image = "'.$filename.'", ';
+            if ($filename) $query .= 'image = "'.$filename.'", link = "urlserwera/uploads/'.$filename.'",';
+
             $endQuery .= ' WHERE id = '.$id;
             while ($value = current($body)) {
                 $query .= key($body).'='.'"'.$body[key($body)].'", ';

@@ -31,8 +31,13 @@
                 !$filename
             ) die(json_encode(['message' => 'Wrong data']));
 
-            $query = 'insert into offers (photo,';
-            $endQuery .= ' values ("'.$filename.'", ';
+            if ($filename){
+                $query = 'insert into offers (photo,';
+                $endQuery .= ' values ("'.$filename.'", ';
+            } else {
+                $query = 'insert into offers (';
+                $endQuery .= ' values (';
+            }
             while ($value = current($body)) {
                 $query .= key($body).', ';
                 $endQuery.= '"'.$body[key($body)].'", ';
@@ -52,7 +57,7 @@
             include '../uploadFunction.php';
 
             $filename = json_decode(uploadFile($files, 'photo'),true)['filename'];
-
+            print_r($body);
             if (
                 !$body['category'] || 
                 !$body['title'] ||
