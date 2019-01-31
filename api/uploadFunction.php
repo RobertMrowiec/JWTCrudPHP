@@ -12,7 +12,7 @@
         $check = getimagesize($file[$name]["tmp_name"]);
         if($check !== false) {
             
-            if ($file[$name]["size"] > 500000) {
+            if ($file[$name]["size"] > 5000000) {
                 // return 'Sorry, your file is too large';
                 return json_encode([
                     'message' => "Sorry, your file is too large.",

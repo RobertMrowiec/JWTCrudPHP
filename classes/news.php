@@ -24,11 +24,12 @@
         public function post($body, $files) {
             include '../uploadFunction.php';
             $filename = json_decode(uploadFile($files, 'image'),true)['filename'];
+            print_r($files);
 
             if (!count($body) && !$filename) die(json_encode(['message' => 'Wrong data']));
             if ($filename){
-                $query = 'insert into news (image, link,';
-                $endQuery .= ' values ("'.$filename.'", "urlserwera/uploads/'.$filename.'", ';
+                $query = 'insert into news (image, ';
+                $endQuery .= ' values ("'.$filename.'", ';
             } else {
                 $query = 'insert into news (';
                 $endQuery .= ' values (';
@@ -59,7 +60,7 @@
             if (!count($body) && !$filename) die(json_encode(['message' => 'Wrong data']));
 
             $query = 'update news SET ';
-            if ($filename) $query .= 'image = "'.$filename.'", link = "urlserwera/uploads/'.$filename.'",';
+            if ($filename) $query .= 'image = "'.$filename.'",';
 
             $endQuery .= ' WHERE id = '.$id;
             while ($value = current($body)) {

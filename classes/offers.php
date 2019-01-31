@@ -27,7 +27,7 @@
 
             if (
                 !$body['category'] || 
-                !$body['title'] && 
+                !$body['title'] ||
                 !$filename
             ) die(json_encode(['message' => 'Wrong data']));
 
